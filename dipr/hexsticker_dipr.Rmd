@@ -1,0 +1,219 @@
+---
+title: "dipr hexsticker"
+output:
+  html_document:
+    df_print: paged
+---
+
+
+```{r setup}
+library(hexSticker)
+library(tidyverse)
+
+```
+
+https://github.com/GuangchuangYu/hexSticker 
+
+
+## fonts & colours
+
+```{r}
+
+library(showtext)
+## Loading Google fonts (http://www.google.com/fonts)
+#font_add_google("Astronaut Jones", "astronautjones")
+font_add_google("Raleway", "raleway")
+font_add_google("Roboto Slab", "roboto_slab")
+
+## Automatically use showtext to render text for future devices
+showtext_auto()
+
+
+```
+
+
+### colours
+
+
+```{r}
+
+# https://colorswall.com/palette/2162/
+ns_dark <- "#0c1445"    #rgb(12,20,69)  
+ns_medium <- "#4c408e"    #rgb(76,64,142)
+ns_light <- "#5c54a4"  #rgb(92,84,164)
+ns_meddark <- "#38285c" #rgb(56,40,92)
+
+
+```
+
+
+
+
+## trials
+
+
+
+Random table
+
+```{r}
+df_length <- 20
+
+rand_pm3 <- function(id_num, df_length, seed = 42){
+  set.seed(seed)
+  runif(df_length, id_num - 1, id_num + 2)
+}
+
+
+
+df_xy <- tibble(
+  id_name = letters[1:df_length], 
+  id_num = 1:df_length
+  )
+
+
+df_xy <- df_xy %>% 
+  mutate(data.analytics = rand_pm3(id_num, df_length, 4)) %>% 
+  mutate(coding.fundamentals = rand_pm3(id_num, df_length)) %>% 
+  mutate(data.analytics = 
+           case_when(
+             id_num > 10 ~ data.analytics - 10,
+             TRUE ~ data.analytics
+             )
+         ) %>% 
+  mutate(coding.fundamentals = 
+           case_when(
+             id_num > 10 ~ coding.fundamentals - 10,
+             TRUE ~ coding.fundamentals
+             )
+  )
+
+df_xy
+```
+
+
+
+```{r eval=FALSE}
+
+p <- ggplot(df_xy, aes(y = data.analytics, x = coding.fundamentals)) + 
+  geom_point(colour = ns_light, size = 1)
+#  geom_point(colour = uvic_blue_dark, size = 2)
+
+p <- p +
+  theme_classic() +
+  theme(
+#    panel.border = element_rect(colour="white"),
+#    plot.title = element_text(face="bold"),
+#    legend.position=c(1,0), 
+#    legend.justification=c(1,0),
+#    legend.title = element_text(size=12),
+#    legend.text = element_text(size=11),
+#    panel.border = element_rect(colour="white"),
+    axis.line = element_line(colour="white"),
+    axis.ticks = element_line(colour = "white"),
+    axis.title = element_text(size=16, colour = "white"),
+    axis.text = element_text(size=16, colour = "white")
+  ) +
+  coord_equal() +
+  expand_limits(x = c(0, 10), y = c(0, 10))
+
+#  scale_x_continuous(breaks = c(0, 2, 4, 6, 8, 10), minor_breaks = NULL) +
+#  scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10), minor_breaks = NULL)
+
+p <- p + 
+  theme_transparent()
+
+p
+
+```
+
+
+
+```{r}
+
+dipr_hex <- 
+  sticker(p, package="dipr", 
+          p_size=20, s_x=1, s_y=.75, s_width=1.3, s_height=1,
+        h_fill=ns_dark, h_color=ns_light, p_color = ns_light,
+        p_family = "roboto_slab")
+
+dipr_hex
+
+```
+
+
+
+
+
+
+```{r eval=FALSE}
+
+#ggplot2::ggsave("dipr_hex.png", width = 2, height = 2)
+
+
+```
+
+
+
+## dipr
+
+
+
+```{r}
+
+dipper <- tribble(
+  ~x, ~y, ~mag,
+  -18, 3, NA,
+  -11, 4, NA,
+  -6, 3, NA,
+  1, 1, NA,
+  3, -5, NA,
+  13, -5, NA,
+  15, 3, NA
+)
+
+```
+
+
+```{r}
+ggplot(dipper, aes(x = x, y = y)) + 
+  geom_point()
+#  geom_point(colour = uvic_blue_dark, size = 2)
+
+
+p <- ggplot(dipper, aes(x = x, y = y)) + 
+  geom_point(colour = ns_light, size = 3)
+#  geom_point(colour = uvic_blue_dark, size = 2)
+
+p <- p +
+  theme_void() +
+  coord_equal() +
+  expand_limits(x = c(0, 10), y = c(0, 10))
+
+#  scale_x_continuous(breaks = c(0, 2, 4, 6, 8, 10), minor_breaks = NULL) +
+#  scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10), minor_breaks = NULL)
+
+p <- p + 
+  theme_transparent()
+
+p
+
+
+```
+
+
+
+```{r}
+
+dipr_hex <- 
+  sticker(p, package="dipr", 
+          s_x=1, s_y=.75, s_width=1.4, s_height=1.1,
+        h_fill=ns_meddark, h_color=ns_meddark, h_size = 1.5,
+        p_color = ns_light,
+        p_size=24, 
+        p_family = "roboto_slab")
+
+dipr_hex
+
+#ggplot2::ggsave("BIDA302_hex.png", width = 2, height = 2)
+
+```

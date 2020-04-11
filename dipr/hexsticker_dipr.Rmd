@@ -55,7 +55,7 @@ BC_blue <- "#234075"    # R 35 G 64 B 117
 # variants via coolors.co
 BC_yellow2 <- "#F2D79E"
 BC_yellow3 <- "#FFEECC"
-BC_blue2 <- "#9BA8C0"
+BC_blue2 <- "#9BA8C0"  # R 155 G 168 B 192
 
 
 # Night Sky palette
@@ -216,6 +216,45 @@ plot(dipr_hex)
 
 ```
 
+
+### dipper the bird
+
+icon source: https://www.allaboutbirds.org/guide/American_Dipper/overview
+
+
+```{r}
+
+dipr_hex <- 
+  sticker("icon-dipper_blue.png", package="dipr", 
+          s_x=1, s_y=.7, s_width=.4, s_height=.4,
+        h_fill=BC_blue, h_color=BC_yellow, h_size = 1.5,
+        p_color = BC_blue2,
+        p_size=32, 
+        p_family = "BCSans-Bold")
+
+plot(dipr_hex)
+
+#ggplot2::ggsave("BIDA302_hex.png", width = 2, height = 2)
+
+```
+
+
+
+```{r}
+
+dipr_hex <- 
+  sticker("icon-dipper_blue.png", package="dipr", 
+          s_x=1, s_y=.7, s_width=.45, s_height=.45,
+        h_fill=BC_blue, h_color=BC_yellow, h_size = 1.5,
+        p_color = BC_yellow,
+        p_size=32, 
+        p_family = "BCSans-Bold")
+
+plot(dipr_hex)
+
+#ggplot2::ggsave("BIDA302_hex.png", width = 2, height = 2)
+
+```
 
 ## References
 

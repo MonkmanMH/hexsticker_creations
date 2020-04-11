@@ -75,6 +75,11 @@ ns_meddark <- "#38285c" #rgb(56,40,92)
 ## dipr
 
 
+Big Dipper x-y coordinates from [Creating Constellations on a Coordinate Plane](http://www.tsgc.utexas.edu/space_vision/constellations.pdf)
+
+Apparent magnitude from ["Big Dipper" Wikipedia entry](https://en.wikipedia.org/wiki/Big_Dipper) and associated pages for individual stars
+
+
 
 ```{r}
 

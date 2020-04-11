@@ -25,6 +25,17 @@ library(showtext)
 font_add_google("Raleway", "raleway")
 font_add_google("Roboto Slab", "roboto_slab")
 
+# BC Sans
+#  https://www2.gov.bc.ca/gov/content/governments/services-for-government/policies-procedures/bc-visual-identity/bc-sans
+
+## loading local font 
+font_add("BCSans-Regular", 
+         regular = "C:\\USERS\\USER\\APPDATA\\LOCAL\\MICROSOFT\\Windows\\Fonts\\BCSANS-REGULAR.OTF")
+
+font_add("BCSans-Bold", 
+         regular = "C:\\USERS\\USER\\APPDATA\\LOCAL\\MICROSOFT\\Windows\\Fonts\\BCSans-Bold.otf")
+
+
 ## Automatically use showtext to render text for future devices
 showtext_auto()
 
@@ -37,6 +48,17 @@ showtext_auto()
 
 ```{r}
 
+# BC Gov palette (of two colours)
+#https://www2.gov.bc.ca/gov/content/governments/services-for-government/policies-procedures/bc-visual-identity/design-guidelines#palette-typography
+BC_yellow <- "#e3a82b"
+BC_blue <- "#234075"
+# variants via coolors.co
+BC_yellow2 <- "#F2D79E"
+BC_yellow3 <- "#FFEECC"
+BC_blue2 <- "#9BA8C0"
+
+
+# Night Sky palette
 # https://colorswall.com/palette/2162/
 ns_dark <- "#0c1445"    #rgb(12,20,69)  
 ns_medium <- "#4c408e"    #rgb(76,64,142)
@@ -49,110 +71,6 @@ ns_meddark <- "#38285c" #rgb(56,40,92)
 
 
 
-## trials
-
-
-
-Random table
-
-```{r}
-df_length <- 20
-
-rand_pm3 <- function(id_num, df_length, seed = 42){
-  set.seed(seed)
-  runif(df_length, id_num - 1, id_num + 2)
-}
-
-
-
-df_xy <- tibble(
-  id_name = letters[1:df_length], 
-  id_num = 1:df_length
-  )
-
-
-df_xy <- df_xy %>% 
-  mutate(data.analytics = rand_pm3(id_num, df_length, 4)) %>% 
-  mutate(coding.fundamentals = rand_pm3(id_num, df_length)) %>% 
-  mutate(data.analytics = 
-           case_when(
-             id_num > 10 ~ data.analytics - 10,
-             TRUE ~ data.analytics
-             )
-         ) %>% 
-  mutate(coding.fundamentals = 
-           case_when(
-             id_num > 10 ~ coding.fundamentals - 10,
-             TRUE ~ coding.fundamentals
-             )
-  )
-
-df_xy
-```
-
-
-
-```{r eval=FALSE}
-
-p <- ggplot(df_xy, aes(y = data.analytics, x = coding.fundamentals)) + 
-  geom_point(colour = ns_light, size = 1)
-#  geom_point(colour = uvic_blue_dark, size = 2)
-
-p <- p +
-  theme_classic() +
-  theme(
-#    panel.border = element_rect(colour="white"),
-#    plot.title = element_text(face="bold"),
-#    legend.position=c(1,0), 
-#    legend.justification=c(1,0),
-#    legend.title = element_text(size=12),
-#    legend.text = element_text(size=11),
-#    panel.border = element_rect(colour="white"),
-    axis.line = element_line(colour="white"),
-    axis.ticks = element_line(colour = "white"),
-    axis.title = element_text(size=16, colour = "white"),
-    axis.text = element_text(size=16, colour = "white")
-  ) +
-  coord_equal() +
-  expand_limits(x = c(0, 10), y = c(0, 10))
-
-#  scale_x_continuous(breaks = c(0, 2, 4, 6, 8, 10), minor_breaks = NULL) +
-#  scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10), minor_breaks = NULL)
-
-p <- p + 
-  theme_transparent()
-
-p
-
-```
-
-
-
-```{r}
-
-dipr_hex <- 
-  sticker(p, package="dipr", 
-          p_size=20, s_x=1, s_y=.75, s_width=1.3, s_height=1,
-        h_fill=ns_dark, h_color=ns_light, p_color = ns_light,
-        p_family = "roboto_slab")
-
-dipr_hex
-
-```
-
-
-
-
-
-
-```{r eval=FALSE}
-
-#ggplot2::ggsave("dipr_hex.png", width = 2, height = 2)
-
-
-```
-
-
 
 ## dipr
 
@@ -161,42 +79,74 @@ dipr_hex
 ```{r}
 
 dipper <- tribble(
-  ~x, ~y, ~mag,
-  -18, 3, NA,
-  -11, 4, NA,
-  -6, 3, NA,
-  1, 1, NA,
-  3, -5, NA,
-  13, -5, NA,
-  15, 3, NA
+  ~name, ~x, ~y, ~mag,
+  "Alkaid or Benetnash", -18, 3, 1.85,
+  "Mizar", -11, 4, 2.04,
+  "Alioth", -6, 3, 1.76,
+  "Megrez", 1, 1, 3.312,
+  "Phecda", 3, -5, 2.44,
+  "Merak", 13, -5, 2.37,
+  "Dubhe", 15, 3, 1.79
 )
 
+# reverse magnitude 
+#   note: magnitude is measured on log scale 
+#   https://en.wikipedia.org/wiki/Apparent_magnitude
+
+dipper <- dipper %>% 
+  mutate(mag_rev = 1/log(mag))
+
+dipper
 ```
 
 
+some preliminary plots
+
 ```{r}
-ggplot(dipper, aes(x = x, y = y)) + 
+
+p_test <- ggplot(dipper, aes(x = x, y = y)) + 
   geom_point()
-#  geom_point(colour = uvic_blue_dark, size = 2)
+p_test
 
+# add scale size an
+p_test + 
+  scale_size_area() +
+  coord_equal()
 
-p <- ggplot(dipper, aes(x = x, y = y)) + 
-  geom_point(colour = ns_light, size = 3)
-#  geom_point(colour = uvic_blue_dark, size = 2)
+```
 
-p <- p +
-  theme_void() +
+with significant refinements
+
+* turn point into a circle (with colour and fill)
+
+* join the dots
+
+```{r}
+
+p <-
+ggplot(dipper, aes(x = x, y = y, size = mag_rev)) + 
+  # add line segments between points
+  geom_path(size = 0.25, colour = BC_yellow2) +
+  annotate("segment", 
+           size = 0.25, colour = BC_yellow2,
+           x = dipper$x[4], y = dipper$y[4],       # coordinates for Megrez
+           xend = dipper$x[7], yend = dipper$y[7]) + # coordinates for Dubhe
+  # points, size by area
+  geom_point(shape = 21, colour = BC_yellow3, fill = BC_yellow) +
+  scale_size(range = c(1, 2)) +
+  # set equal length x and y 
   coord_equal() +
-  expand_limits(x = c(0, 10), y = c(0, 10))
-
-#  scale_x_continuous(breaks = c(0, 2, 4, 6, 8, 10), minor_breaks = NULL) +
-#  scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10), minor_breaks = NULL)
-
-p <- p + 
-  theme_transparent()
+#  xlim(-18, 15) +
+  ylim(-8, 8)
 
 p
 
+p <- p +
+  theme_void() +
+  theme(legend.position = "none")
+p
+
+ggplot2::ggsave("dipper_image.png", scale = 1)
 
 ```
 
@@ -206,14 +156,46 @@ p
 
 dipr_hex <- 
   sticker(p, package="dipr", 
-          s_x=1, s_y=.75, s_width=1.4, s_height=1.1,
-        h_fill=ns_meddark, h_color=ns_meddark, h_size = 1.5,
-        p_color = ns_light,
-        p_size=24, 
-        p_family = "roboto_slab")
+          s_x=1, s_y=.75, s_width=1.4, s_height=1.4,
+        h_fill=BC_blue, h_color=BC_blue2, h_size = 1.5,
+        p_color = BC_blue2,
+        p_size=32, 
+        p_family = "BCSans-Bold")
 
-dipr_hex
+plot(dipr_hex)
 
 #ggplot2::ggsave("BIDA302_hex.png", width = 2, height = 2)
 
 ```
+
+
+
+## icon version
+
+<div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+
+
+
+```{r}
+
+dipr_hex <- 
+  sticker("vault.png", package="dipr", 
+          s_x=1, s_y=.7, s_width=.4, s_height=.4,
+        h_fill=BC_blue2, h_color=BC_blue, h_size = 1.5,
+        p_color = BC_blue,
+        p_size=30, 
+        p_family = "BCSans-Bold")
+
+plot(dipr_hex)
+
+#ggplot2::ggsave("BIDA302_hex.png", width = 2, height = 2)
+
+```
+
+## References
+
+https://kimnewzealand.github.io/2019/02/21/celestial-maps/
+
+http://www.datasketch.es/may/
+http://www.datasketch.es/may/code/nadieh/
+

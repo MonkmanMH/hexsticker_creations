@@ -72,7 +72,7 @@ ns_meddark <- "#38285c" #rgb(56,40,92)
 
 
 
-## dipr
+## constellation (a pun)
 
 
 Big Dipper x-y coordinates from [Creating Constellations on a Coordinate Plane](http://www.tsgc.utexas.edu/space_vision/constellations.pdf)
@@ -175,7 +175,7 @@ plot(dipr_hex)
 
 
 
-## icon version
+## security (literal)
 
 <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
 
@@ -217,7 +217,7 @@ plot(dipr_hex)
 ```
 
 
-### dipper the bird
+### dipper the bird (another pun)
 
 icon source: https://www.allaboutbirds.org/guide/American_Dipper/overview
 
@@ -246,6 +246,72 @@ dipr_hex <-
   sticker("icon-dipper_blue.png", package="dipr", 
           s_x=1, s_y=.7, s_width=.45, s_height=.45,
         h_fill=BC_blue, h_color=BC_yellow, h_size = 1.5,
+        p_color = BC_yellow,
+        p_size=32, 
+        p_family = "BCSans-Bold")
+
+plot(dipr_hex)
+
+#ggplot2::ggsave("BIDA302_hex.png", width = 2, height = 2)
+
+```
+
+### dipper photos
+
+_Cinclus mexicanus_
+
+http://nwbirdblog.blogspot.com/2011/10/american-dipper.html
+
+
+```{r}
+
+#image colours
+dip_1 <- "#b5b2b4"
+dip_2 <- "#bcc3cd"
+dip_3 <- "#675d51"
+
+dipr_hex <- 
+  sticker("img_nwbirdblog/_DSC0388[245][1600] (American Dipper).jpg", package="dipr", 
+          s_x=1, s_y=.9, 
+          s_width=1.25, s_height=1.25,
+        h_fill=dip_2, h_color=BC_yellow, 
+        h_size = 1.5, 
+        p_color = BC_blue,
+        p_size=32, 
+        p_y=1.6,
+        p_family = "BCSans-Bold")
+
+plot(dipr_hex)
+
+#ggplot2::ggsave("BIDA302_hex.png", width = 2, height = 2)
+
+```
+
+https://www.audubon.org/field-guide/bird/american-dipper
+
+http://vireo.ansp.org/search.html?Form=Search&SEARCHBY=Common&KEYWORDS=american+dipper&RESULTS=100&Search2=Search
+
+https://ornithologi.com/2018/02/14/american-dipper-cinclus-mexicanus-illustration-with-a-note-on-the-evolution-of-cinclidae/
+
+**_flickr creative commons_**
+
+https://flickr.com/photos/ericellingson/31414482320/
+
+https://flickr.com/photos/amaizlish/39303297534/
+39303297534_9987f76e5f_q
+
+
+
+```{r}
+
+#image colours
+dip_1 <- "#4e4c44"
+dip_2 <- "#3e3341"
+
+dipr_hex <- 
+  sticker("img/39303297534_59ff7ba50f_o.jpg", package="dipr", 
+          s_x=1, s_y=.7, s_width=.45, s_height=.45,
+        h_fill=dip_1, h_color=BC_yellow, h_size = 1.5,
         p_color = BC_yellow,
         p_size=32, 
         p_family = "BCSans-Bold")
